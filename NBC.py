@@ -7,7 +7,23 @@ def main():
     valid = sys.argv[2]
 
     df = pd.read_csv(valid)
+
+    df.loc[df['date_died'] != '9999-99-99', 'date_died'] = 1
+    df.loc[df['date_died'] == '9999-99-99', 'date_died'] = 0
+
+    for col in ['sex', 'patient_type', 'intubed', 'pneumonia', \
+                'pregnancy', 'diabetes', 'copd', 'asthma', 'inmsupr', \
+                'hypertension', 'other_disease', 'cardiovascular', \
+                'obesity', 'renal_chronic', 'tobacco', 'contact_other_covid', \
+                'covid_res', 'icu']:
+
+        df.loc[np.logical_and(df[col] != 1, df[col] != 2), col] = 0
+ 
+
+
     nbc = NBC(train, valid)
+
+    resultClass = []
 
     for i in range(len(df)):
         cols = df.columns.tolist()
@@ -16,7 +32,19 @@ def main():
 
         # for col, val in pt:
         #     print(col, val)
-        nbc.classifier(pt)
+        resultClass.append(nbc.classifier(pt))
+
+    validClass = df['date_died'].tolist()
+
+    correct = np.sum(np.equal(resultClass, validClass))
+    total = len(validClass)
+
+    print(correct/total)
+    
+
+
+
+        
 
 class NBC:
 
@@ -106,24 +134,36 @@ class NBC:
     def classifier(self, x):
         pSurvivedGivenX = self.classP('survived')
         for feature, featureVal in x:
-            pSurvivedGivenX *= self.condP(feature, featureVal, 'survived')
+            if feature not in ['entry_date', 'date_symptoms', 'date_died', 'age']:
+                pSurvivedGivenX *= self.condP(feature, featureVal, 'survived')
 
 
         pDiedGivenX = self.classP('died')
         for feature, featureVal in x:
-            pDiedGivenX *= self.condP(feature, featureVal, 'died')
+            if feature not in ['entry_date', 'date_symptoms', 'date_died', 'age']:
+                pDiedGivenX *= self.condP(feature, featureVal, 'died')
 
         pSurvivedGivenXNormalized = pSurvivedGivenX/(pSurvivedGivenX + pDiedGivenX)
         pDiedGivenXNormalized = pDiedGivenX/(pSurvivedGivenX + pDiedGivenX)
 
+        classification = 0
 
-        
         if(pSurvivedGivenXNormalized > pDiedGivenXNormalized):
-            print("Patient will survive with a ", pSurvivedGivenXNormalized * 100, "% percent chance.")
+            # print("Patient will survive with a ", pSurvivedGivenXNormalized * 100, "% percent chance.")
+            classification = 0
 
         elif(pSurvivedGivenXNormalized < pDiedGivenXNormalized):
-            print("Patient will die with a ", pDiedGivenXNormalized * 100, "% percent chance.")
+            # print("Patient will die with a ", pDiedGivenXNormalized * 100, "% percent chance.")
+            classification = 1
 
         else:
-            print("Patient has an equal chance of living and dying.")
+            # print("Patient has an equal chance of living and dying.")
+            classification = 0
+        
+        return classification
 
+
+
+
+if __name__ == '__main__':
+    main()
