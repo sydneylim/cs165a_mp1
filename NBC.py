@@ -19,6 +19,10 @@ def main():
 
         df.loc[np.logical_and(df[col] != 1, df[col] != 2), col] = 0
  
+    df.loc[df['age'] <= 18, 'age'] = 1
+    df.loc[np.logical_and(df['age'] <= 30, df[col] > 18), 'age'] = 2
+    df.loc[np.logical_and(df['age'] <= 65, df[col] > 30), 'age'] = 3
+    df.loc[df['age'] > 65, 'age'] = 4
 
 
     nbc = NBC(train, valid)
@@ -75,9 +79,13 @@ class NBC:
 
             df.loc[np.logical_and(df[col] != 1, df[col] != 2), col] = 0
 
+        df.loc[df['age'] <= 18, 'age'] = 1
+        df.loc[np.logical_and(df['age'] <= 30, df[col] > 18), 'age'] = 2
+        df.loc[np.logical_and(df['age'] <= 65, df[col] > 30), 'age'] = 3
+        df.loc[df['age'] > 65, 'age'] = 4
 
         for col in df:
-            if col not in ['entry_date', 'date_symptoms', 'age']:
+            if col not in ['entry_date', 'date_symptoms']:
                 for val in df[col].unique():
                     self.Dict['died'][(col, val)] = sum(np.logical_and(df[col] == val, df['date_died'] == 1))
                     self.Dict['survived'][(col, val)] = sum(np.logical_and(df[col] == val, df['date_died'] == 0))
@@ -135,13 +143,13 @@ class NBC:
     def classifier(self, x):
         pSurvivedGivenX = self.classP('survived')
         for feature, featureVal in x:
-            if feature not in ['entry_date', 'date_symptoms', 'date_died', 'age']:
+            if feature not in ['entry_date', 'date_symptoms', 'date_died']:
                 pSurvivedGivenX *= self.condP(feature, featureVal, 'survived')
 
 
         pDiedGivenX = self.classP('died')
         for feature, featureVal in x:
-            if feature not in ['entry_date', 'date_symptoms', 'date_died', 'age']:
+            if feature not in ['entry_date', 'date_symptoms', 'date_died']:
                 pDiedGivenX *= self.condP(feature, featureVal, 'died')
 
         pSurvivedGivenXNormalized = pSurvivedGivenX/(pSurvivedGivenX + pDiedGivenX)
