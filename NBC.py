@@ -29,8 +29,8 @@ def main():
     correct = np.sum(np.equal(resultClass, validClass))
     total = len(validClass)
 
-    print(*resultClass, sep = "\n")
-    # print(correct/total)
+    # print(*resultClass, sep = "\n")
+    print(correct/total)
     
 
 
@@ -138,13 +138,13 @@ class NBC:
             return self.Dict[classVal][feature].pdf(featureVal)
         
         else:
-            # if feature in ['sex', 'patient_type', 'intubed', 'pneumonia', \
-            #         'pregnancy', 'diabetes', 'copd', 'asthma', 'inmsupr', \
-            #         'hypertension', 'other_disease', 'cardiovascular', \
-            #         'obesity', 'renal_chronic', 'tobacco', 'contact_other_covid', \
-            #         'covid_res', 'icu']:
-            #     if featureVal == 0:
-            #         return 1
+            if feature in ['sex', 'patient_type', 'intubed', 'pneumonia', \
+                    'pregnancy', 'diabetes', 'copd', 'asthma', 'inmsupr', \
+                    'hypertension', 'other_disease', 'cardiovascular', \
+                    'obesity', 'renal_chronic', 'tobacco', 'contact_other_covid', \
+                    'covid_res', 'icu']:
+                if featureVal == 0:
+                    return 1
 
             y = self.classCount(classVal)
             x = self.Dict[classVal][feature, featureVal]
