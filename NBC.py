@@ -39,7 +39,8 @@ def main():
     correct = np.sum(np.equal(resultClass, validClass))
     total = len(validClass)
 
-    print(correct/total)
+    print(*resultClass, sep = "\n")
+    # print(correct/total)
     
 
 
