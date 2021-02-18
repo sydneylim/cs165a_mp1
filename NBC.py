@@ -4,43 +4,57 @@ import sys
 from datetime import datetime as dt
 from scipy.stats import norm, skewnorm
 import random
+import time
 
 def main():
+
+    # start = time.time()
     train = sys.argv[1]
     valid = sys.argv[2]
 
     df = (preprocess(valid))
-    # test_df = df.sample(10000)
+    #test_df = df
 
     # weights = {'sex': 1.8, 'patient_type': 0.2, 'entry_date': 2.0, 'date_symptoms': 1.6, 'date_died': 0.2, 'intubed': 0.2, 'pneumonia': 0.8, 'age': 0.4, 'pregnancy': 2.0, 'diabetes': 0.4, 'copd': 0.2, 'asthma': 0.2, 'inmsupr': 0.4, 'hypertension': 0.6000000000000001, 'other_disease': 0.6000000000000001, 'cardiovascular': 1.6, 'obesity': 0.6000000000000001, 'renal_chronic': 1.0, 'tobacco': 1.4000000000000001, 'contact_other_covid': 1.8, 'covid_res': 1.0, 'icu': 0.2}
-    weights = {'sex': 0.4, 'patient_type': 0.4, 'entry_date': 1.8, 'date_symptoms': 1.0, 'intubed': 1.0, 'pneumonia': 1.0, 'age': 1.0, 'pregnancy': 2.0, 'diabetes': 1.0, 'copd': 0.8, 'asthma': 1.2000000000000002, 'inmsupr': 1.0, 'hypertension': 1.0, 'other_disease': 1.0, 'cardiovascular': 1.0, 'obesity': 1.0, 'renal_chronic': 1.0, 'tobacco': 1.0, 'contact_other_covid': 1.6, 'covid_res': 1.0, 'icu': 1.0}
+    # weights = {'sex': 0.4, 'patient_type': 0.4, 'entry_date': 1.8, 'date_symptoms': 1.0, 'intubed': 1.0, 'pneumonia': 1.0, 'age': 1.0, 'pregnancy': 2.0, 'diabetes': 1.0, 'copd': 0.8, 'asthma': 1.2000000000000002, 'inmsupr': 1.0, 'hypertension': 1.0, 'other_disease': 1.0, 'cardiovascular': 1.0, 'obesity': 1.0, 'renal_chronic': 1.0, 'tobacco': 1.0, 'contact_other_covid': 1.6, 'covid_res': 1.0, 'icu': 1.0}
+    
+    weights = {'asthma': 1.8, 'icu': 0.6000000000000001, 'inmsupr': 0.4, 'age': 1.2000000000000002, 'contact_other_covid': 3.0, 'intubed': 1.0, 'pneumonia': 1.0, 'copd': 0.8, 'tobacco': 1.0, 'entry_date': 1.4000000000000001, 'date_symptoms': 1.8, 'hypertension': 1.0, 'other_disease': 0.6000000000000001, 'cardiovascular': 1.0, 'pregnancy': 1.2000000000000002, 'sex': 1.0, 'diabetes': 0.8, 'obesity': 1.2000000000000002, 'renal_chronic': 1.0, 'patient_type': 1.0, 'covid_res': 2.6}
+    
+    
     # weights = {}
 
     nbc = NBC(train, valid, weights)
 
     '''
-    # validClass = df['date_died'].tolist()
-    validClass = test_df['date_died'].tolist()
+    validClass = df['date_died'].tolist()
+    # validClass = test_df['date_died'].tolist()
     
-    for col in ['sex', 'patient_type', 'entry_date', 'date_symptoms', 'intubed', 'pneumonia', \
-                'age', 'pregnancy', 'diabetes', 'copd', 'asthma', 'inmsupr', \
+    # cols = ['sex', 'patient_type', 'entry_date', 'date_symptoms', 'intubed', 'pneumonia', \
+    #             'age', 'pregnancy', 'diabetes', 'copd', 'asthma', 'inmsupr', \
+    #             'hypertension', 'other_disease', 'cardiovascular', \
+    #             'obesity', 'renal_chronic', 'tobacco', 'contact_other_covid', \
+    #             'covid_res', 'icu']
+    
+    cols = ['asthma', 'icu', 'inmsupr', 'age', 'contact_other_covid', 'intubed', 'pneumonia', 'copd', 'tobacco', \
+                'entry_date', 'date_symptoms',  \
                 'hypertension', 'other_disease', 'cardiovascular', \
-                'obesity', 'renal_chronic', 'tobacco', 'contact_other_covid', \
-                'covid_res', 'icu']:
-        
+                'pregnancy', 'sex', 'diabetes',  \
+                'obesity', 'renal_chronic',   \
+                'patient_type', 'covid_res']
+
+
+    for col in cols:
         bestW = 1
         mostAcc = 0
-
-        
     
-        for w in (np.arange(10)+1) * 0.2:
+        for w in (np.arange(15)+1) * 0.2:
             nbc.weights[col] = w
 
             resultClass = []
 
-            for i in range(len(test_df)):
-                cols = test_df.columns.tolist()
-                vals = test_df.iloc[i].tolist()
+            for i in range(len(df)):
+                cols = df.columns.tolist()
+                vals = df.iloc[i].tolist()
                 pt = list(zip(cols, vals))
 
                 resultClass.append(nbc.classifier(pt))
@@ -56,11 +70,14 @@ def main():
         
         nbc.weights[col] = bestW
 
-        print("col: ", col, ", acc: ", mostAcc)
+        print("col:", col, ", acc:", mostAcc, "elapsed time =", time.time()-start)
 
-    print(weights)
+
+    print("weights:", weights)
 
     '''
+
+    
 
 
 
@@ -82,7 +99,7 @@ def main():
     total = len(validClass)
 
     print(*resultClass, sep = "\n")
-    # print(correct/total)
+    # print("accuracy:", correct/total)
     
 
 
