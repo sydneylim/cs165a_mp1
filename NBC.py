@@ -29,9 +29,9 @@ def main():
 
     
     # weights = {}
+    weights = {'sex': 0.9, 'patient_type': 0.30000000000000004, 'entry_date': 1.6, 'date_symptoms': 1.6, 'intubed': 0.9, 'pneumonia': 1.0, 'age': 1.0, 'pregnancy': 0.9, 'diabetes': 0.5, 'copd': 0.30000000000000004, 'asthma': 2.0, 'inmsupr': 2.6, 'hypertension': 1.0, 'other_disease': 1.4000000000000001, 'cardiovascular': 0.8, 'obesity': 1.0, 'renal_chronic': 1.0, 'tobacco': 0.7000000000000001, 'contact_other_covid': 1.5, 'covid_res': 1.0, 'icu': 1.0}
     # weights = {'sex': 0.9, 'patient_type': 0.30000000000000004, 'entry_date': 1.6, 'date_symptoms': 1.6, 'intubed': 0.9, 'pneumonia': 1.0, 'age': 1.0, 'pregnancy': 0.9, 'diabetes': 0.5, 'copd': 0.30000000000000004, 'asthma': 2.0, 'inmsupr': 2.6, 'hypertension': 1.0, 'other_disease': 1.4000000000000001, 'cardiovascular': 0.8, 'obesity': 1.0, 'renal_chronic': 1.0, 'tobacco': 0.7000000000000001, 'contact_other_covid': 1.5, 'covid_res': 1.0, 'icu': 1.0}
-    # weights = {'sex': 0.9, 'patient_type': 0.30000000000000004, 'entry_date': 1.6, 'date_symptoms': 1.6, 'intubed': 0.9, 'pneumonia': 1.0, 'age': 1.0, 'pregnancy': 0.9, 'diabetes': 0.5, 'copd': 0.30000000000000004, 'asthma': 2.0, 'inmsupr': 2.6, 'hypertension': 1.0, 'other_disease': 1.4000000000000001, 'cardiovascular': 0.8, 'obesity': 1.0, 'renal_chronic': 1.0, 'tobacco': 0.7000000000000001, 'contact_other_covid': 1.5, 'covid_res': 1.0, 'icu': 1.0}
-    weights = {'sex': 0.7000000000000001, 'patient_type': 0.30000000000000004, 'entry_date': 1.6, 'date_symptoms': 1.6, 'intubed': 0.9, 'pneumonia': 1.0, 'age': 1.0, 'pregnancy': 0.9, 'diabetes': 0.30000000000000004, 'copd': 0.30000000000000004, 'asthma': 2.2, 'inmsupr': 2.6, 'hypertension': 1.0, 'other_disease': 1.4000000000000001, 'cardiovascular': 0.4, 'obesity': 1.2000000000000002, 'renal_chronic': 1.0, 'tobacco': 0.8, 'contact_other_covid': 1.5, 'covid_res': 1.0, 'icu': 1.0}
+    # weights = {'sex': 0.7000000000000001, 'patient_type': 0.30000000000000004, 'entry_date': 1.6, 'date_symptoms': 1.6, 'intubed': 0.9, 'pneumonia': 1.0, 'age': 1.0, 'pregnancy': 0.9, 'diabetes': 0.30000000000000004, 'copd': 0.30000000000000004, 'asthma': 2.2, 'inmsupr': 2.6, 'hypertension': 1.0, 'other_disease': 1.4000000000000001, 'cardiovascular': 0.4, 'obesity': 1.2000000000000002, 'renal_chronic': 1.0, 'tobacco': 0.8, 'contact_other_covid': 1.5, 'covid_res': 1.0, 'icu': 1.0}
 
 
     # weights = {'other_disease': 0.9, 'entry_date': 1.8, 'contact_other_covid': 2.0, 'asthma': 0.9, 'date_symptoms': 1.5, 'sex': 1.8, 'diabetes': 0.8, 'obesity': 0.1, 'covid_res': 2.0, 'age': 1.2000000000000002, 'intubed': 0.6000000000000001, 'pneumonia': 1.0, 'tobacco': 0.30000000000000004, 'hypertension': 0.9, 'patient_type': 1.0, 'pregnancy': 0.5, 'renal_chronic': 0.9, 'inmsupr': 1.0, 'icu': 1.0, 'copd': 1.0, 'cardiovascular': 0.8}
@@ -128,8 +128,27 @@ def main():
 
     validClass = df['date_died'].tolist()
 
-    correct = np.sum(np.equal(resultClass, validClass))
-    total = len(validClass)
+    # resultClass = np.array(resultClass)
+    # validClass = np.array(validClass)
+
+    # mask = validClass == 1
+    # resultClassDied = resultClass[mask]
+    # validClassDied = validClass[mask]
+
+    # mask = validClass == 0
+    # resultClassSurvived = resultClass[mask]
+    # validClassSurvived = validClass[mask]
+    
+    # accDied = np.sum(resultClassDied == validClassDied)/ len(validClassDied)
+    # accSurvived = np.sum(resultClassSurvived == validClassSurvived)/ len(validClassSurvived)
+    # accTotal = np.sum(resultClass == validClass)/ len(validClass)
+
+    # print("died accuracy:", accDied)
+    # print("survived accuracy:", accSurvived)
+    # print("total accuracy:", accTotal)
+
+    # correct = np.sum(np.equal(resultClass, validClass))
+    # total = len(validClass)
 
     print(*resultClass, sep = "\n")
     # print("overall accuracy:", correct/total)
