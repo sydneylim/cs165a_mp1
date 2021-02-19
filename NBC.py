@@ -13,9 +13,7 @@ def main():
     train = sys.argv[1]
     valid = sys.argv[2]
 
-
     df = (preprocess(valid))
-    
     
     # weights = {}
     weights = {'sex': 0.9, 'patient_type': 0.30000000000000004, 'entry_date': 1.6, 'date_symptoms': 1.6, 'intubed': 0.9, 'pneumonia': 1.0, 'age': 1.0, 'pregnancy': 0.9, 'diabetes': 0.5, 'copd': 0.30000000000000004, 'asthma': 2.0, 'inmsupr': 2.6, 'hypertension': 1.0, 'other_disease': 1.4000000000000001, 'cardiovascular': 0.8, 'obesity': 1.0, 'renal_chronic': 1.0, 'tobacco': 0.7000000000000001, 'contact_other_covid': 1.5, 'covid_res': 1.0, 'icu': 1.0}
@@ -74,7 +72,7 @@ def main():
         resultClass.append(nbc.classifier(pt))
 
 
-    validClass = df['date_died'].tolist()
+    # validClass = df['date_died'].tolist()
 
     # # printing accuracies based on class
     # resultClass = np.array(resultClass)
