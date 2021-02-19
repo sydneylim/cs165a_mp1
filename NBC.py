@@ -39,7 +39,7 @@ def main():
 
     # start = time.time()
 
-    validClass = df['date_died'].tolist()
+    # validClass = df['date_died'].tolist()
     # validClass = test_df['date_died'].tolist()
     
     # original ordering, bash 4, 30, 88.62, 88.49
@@ -113,17 +113,17 @@ def main():
   
     resultClass = []
 
-    for i in range(len(df)):
-        cols = df.columns.tolist()
-        vals = df.iloc[i].tolist()
-        pt = list(zip(cols, vals))
+    # for i in range(len(df)):
+    #     cols = df.columns.tolist()
+    #     vals = df.iloc[i].tolist()
+    #     pt = list(zip(cols, vals))
 
-        resultClass.append(nbc.classifier(pt))
+    #     resultClass.append(nbc.classifier(pt))
 
-    validClass = df['date_died'].tolist()
+    # validClass = df['date_died'].tolist()
 
-    correct = np.sum(np.equal(resultClass, validClass))
-    total = len(validClass)
+    # correct = np.sum(np.equal(resultClass, validClass))
+    # total = len(validClass)
 
     print(*resultClass, sep = "\n")
     # print("accuracy:", correct/total)
