@@ -29,20 +29,22 @@ def main():
 
     
     # weights = {}
-    # weights = {'sex': 0.9, 'patient_type': 0.30000000000000004, 'entry_date': 1.6, 'date_symptoms': 1.6, 'intubed': 0.9, 'pneumonia': 1.0, 'age': 1.0, 'pregnancy': 0.9, 'diabetes': 0.5, 'copd': 0.30000000000000004, 'asthma': 2.0, 'inmsupr': 2.6, 'hypertension': 1.0, 'other_disease': 1.4000000000000001, 'cardiovascular': 0.8, 'obesity': 1.0, 'renal_chronic': 1.0, 'tobacco': 0.7000000000000001, 'contact_other_covid': 1.5, 'covid_res': 1.0, 'icu': 1.0}
-    weights = {'other_disease': 0.9, 'entry_date': 1.8, 'contact_other_covid': 2.0, 'asthma': 0.9, 'date_symptoms': 1.5, 'sex': 1.8, 'diabetes': 0.8, 'obesity': 0.1, 'covid_res': 2.0, 'age': 1.2000000000000002, 'intubed': 0.6000000000000001, 'pneumonia': 1.0, 'tobacco': 0.30000000000000004, 'hypertension': 0.9, 'patient_type': 1.0, 'pregnancy': 0.5, 'renal_chronic': 0.9, 'inmsupr': 1.0, 'icu': 1.0, 'copd': 1.0, 'cardiovascular': 0.8}
+    weights = {'sex': 0.9, 'patient_type': 0.30000000000000004, 'entry_date': 1.6, 'date_symptoms': 1.6, 'intubed': 0.9, 'pneumonia': 1.0, 'age': 1.0, 'pregnancy': 0.9, 'diabetes': 0.5, 'copd': 0.30000000000000004, 'asthma': 2.0, 'inmsupr': 2.6, 'hypertension': 1.0, 'other_disease': 1.4000000000000001, 'cardiovascular': 0.8, 'obesity': 1.0, 'renal_chronic': 1.0, 'tobacco': 0.7000000000000001, 'contact_other_covid': 1.5, 'covid_res': 1.0, 'icu': 1.0}
+    # weights = {'other_disease': 0.9, 'entry_date': 1.8, 'contact_other_covid': 2.0, 'asthma': 0.9, 'date_symptoms': 1.5, 'sex': 1.8, 'diabetes': 0.8, 'obesity': 0.1, 'covid_res': 2.0, 'age': 1.2000000000000002, 'intubed': 0.6000000000000001, 'pneumonia': 1.0, 'tobacco': 0.30000000000000004, 'hypertension': 0.9, 'patient_type': 1.0, 'pregnancy': 0.5, 'renal_chronic': 0.9, 'inmsupr': 1.0, 'icu': 1.0, 'copd': 1.0, 'cardiovascular': 0.8}
     # weights = {'asthma': 1.8, 'icu': 0.5, 'inmsupr': 0.7000000000000001, 'age': 1.0, 'contact_other_covid': 2.7, 'intubed': 1.0, 'pneumonia': 1.0, 'copd': 0.30000000000000004, 'tobacco': 2.5, 'entry_date': 1.0, 'date_symptoms': 2.4000000000000004, 'hypertension': 0.5, 'other_disease': 1.5, 'cardiovascular': 0.30000000000000004, 'pregnancy': 1.0, 'sex': 1.1, 'diabetes': 1.0, 'obesity': 1.0, 'renal_chronic': 0.6000000000000001, 'patient_type': 1.0, 'covid_res': 2.0}
     # weights = {'age': 1.5, 'inmsupr': 0.8, 'renal_chronic': 1.7000000000000002, 'obesity': 1.0, 'diabetes': 1.0, 'hypertension': 1.0, 'asthma': 1.0, 'icu': 0.8, 'pneumonia': 1.0, 'cardiovascular': 1.2000000000000002, 'copd': 0.2, 'pregnancy': 1.1, 'sex': 0.8, 'intubed': 1.0, 'other_disease': 1.1, 'tobacco': 0.8, 'date_symptoms': 2.1, 'entry_date': 1.0, 'covid_res': 2.2, 'contact_other_covid': 2.9000000000000004, 'patient_type': 1.0}
 
 
     nbc = NBC(train, valid, weights)
 
-    start = time.time()
+    # start = time.time()
 
     validClass = df['date_died'].tolist()
     # validClass = test_df['date_died'].tolist()
     
-    # original ordering, bash 4, 30, 88.62
+    # original ordering, bash 4, 30, 88.62, 88.49
+    # bash 7, 50
+    # bash 8, with weights
     # cols = ['sex', 'patient_type', 'entry_date', 'date_symptoms', 'intubed', 'pneumonia', \
     #             'age', 'pregnancy', 'diabetes', 'copd', 'asthma', 'inmsupr', \
     #             'hypertension', 'other_disease', 'cardiovascular', \
@@ -104,14 +106,11 @@ def main():
 
 
     print("weights:", weights)
+    
     '''
-    
 
     
-
-
-
-    
+  
     resultClass = []
 
     for i in range(len(df)):
@@ -119,8 +118,6 @@ def main():
         vals = df.iloc[i].tolist()
         pt = list(zip(cols, vals))
 
-        # for col, val in pt:
-        #     print(col, val)
         resultClass.append(nbc.classifier(pt))
 
     validClass = df['date_died'].tolist()
@@ -131,7 +128,7 @@ def main():
     print(*resultClass, sep = "\n")
     # print("accuracy:", correct/total)
     
-
+    
 
     
   
@@ -155,11 +152,6 @@ def preprocess(filename):
 
         df.loc[np.logical_and(df[col] != 1, df[col] != 2), col] = 0
 
-    # df.loc[df['age'] <= 18, 'age'] = 1
-    # df.loc[np.logical_and(df['age'] <= 30, df[col] > 18), 'age'] = 2
-    # df.loc[np.logical_and(df['age'] <= 65, df[col] > 30), 'age'] = 3
-    # df.loc[df['age'] > 65, 'age'] = 4
-
     return df
         
 
@@ -181,14 +173,13 @@ class NBC:
         df = preprocess(self.train)
 
         for col in df:
-            if col not in ['entry_date', 'date_symptoms']:
+            if col not in ['entry_date', 'date_symptoms', 'age']:
                 for val in df[col].unique():
                     self.Dict['died'][(col, val)] = sum(np.logical_and(df[col] == val, df['date_died'] == 1))
                     self.Dict['survived'][(col, val)] = sum(np.logical_and(df[col] == val, df['date_died'] == 0))
 
-                    #Dict[(col, val)] = sum(df[col] == val)
-
         self.Dict['survived']['age'] = norm(np.mean(df.loc[df['date_died'] == 0]['age'].tolist()), np.std(df.loc[df['date_died'] == 0]['age'].tolist()))
+       
         a, loc, scale = skewnorm.fit(df.loc[df['date_died'] == 0]['entry_date'].tolist())
         self.Dict['survived']['entry_date'] = skewnorm(a, loc, scale)
 
@@ -202,8 +193,7 @@ class NBC:
 
         a, loc, scale = skewnorm.fit(df.loc[df['date_died'] == 1]['date_symptoms'].tolist())
         self.Dict['died']['date_symptoms'] = skewnorm(a, loc, scale)
-        # for key in Dict:
-        #     print(key,':', Dict['date_died'][key])
+   
 
 
     # class probability
